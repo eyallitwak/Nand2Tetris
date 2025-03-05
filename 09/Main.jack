@@ -1,0 +1,53 @@
+class Main {
+    function void main() {
+        var Game game;
+        var int ballx, bally, destx;
+        var int play;
+        let play = 1;
+
+        while (play = 1) {
+        do Screen.clearScreen();
+        // generate random seed for the ball
+        do Random.setSeed(Main.generateSeed());
+        let ballx = 10 + Random.randRange(490);
+        let bally = 5 + Random.randRange(190);
+        let destx = 10 + Random.randRange(490);
+
+        let game = Game.new(ballx, bally, destx);
+        do game.run();
+        do game.dispose();
+        do Output.moveCursor(20, 8);
+        do Sys.wait(50);
+        let play = Keyboard.readInt("PRESS 1 TO PLAY AGAIN, ANY OTHER NUMBER TO EXIT ");
+        }
+
+        do Screen.clearScreen();
+        do Output.moveCursor(10,28);
+        do Output.printString("GOODBYE!");
+        return;
+    }
+
+    function int generateSeed() {
+        var boolean toStart;
+        var int seed;
+
+        // draws the title screen
+        do Output.moveCursor(10, 23);
+        do Output.printString("PRESS ENTER TO PLAY");
+        do Sans.drawSans(4174);
+
+        let seed = 1;
+        let toStart = false;
+        while (~toStart) {// "times" the user input to get a sufficiently random seed
+            if (Keyboard.keyPressed() = 128) {
+                let toStart = true;
+            }
+
+            let seed = seed + 1;
+            if (seed > 23070) { let seed = 1; }
+        }
+
+        do Screen.clearScreen();
+        return seed;
+    }
+}

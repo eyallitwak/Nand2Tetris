@@ -1,0 +1,28 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/3/a/PC.hdl
+/**
+ * A 16-bit counter.
+ * if      reset(t): out(t+1) = 0
+ * else if load(t):  out(t+1) = in(t)
+ * else if inc(t):   out(t+1) = out(t) + 1
+ * else              out(t+1) = out(t)
+ */
+CHIP PC {
+    IN in[16], reset, load, inc;
+    OUT out[16];
+    
+    PARTS:
+    //// Replace this comment with your code.
+    Register(in=afterReset , load=masterLoad , out=out , out=regValue );
+    
+    // Asserting Register's load if there's an asserted control bit
+    Or(a=load , b=reset , out=loadOrreset );
+    Or(a=inc , b=loadOrreset , out=masterLoad );
+    
+    Inc16(in=regValue , out= incedValue);
+    Mux16(a=regValue , b=incedValue , sel=inc , out=afterInc );
+    Mux16(a=afterInc , b=in , sel=load , out=afterLoad );
+    Mux16(a=afterLoad , b=false , sel=reset , out=afterReset );
+}

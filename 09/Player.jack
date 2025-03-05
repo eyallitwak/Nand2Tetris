@@ -1,0 +1,102 @@
+class Player {
+	field int x, y; // coords of top-left corner of the player
+    field int size; // length of this player, in pixels
+
+    constructor Player new(int ax, int ay, int asize) {
+        let x = ax;
+        let y = ay;
+        let size = asize;
+        do draw();
+        return this;
+    }
+
+/** Disposer. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+/** Draws this player in its current (x,y) location */
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+/** Erases this player. */
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+/** Gets left edge of player*/
+    method int getLeft() {
+        return x;
+    }
+
+/** Gets right edge of player*/
+    method int getRight() {
+        return (x + size);
+    }
+
+/** Gets upper edge of player*/
+    method int getUp() {
+        return y;
+    }
+
+/** Gets lower edge of player*/
+    method int getDown() {
+        return (y + size);
+    }
+
+
+/** Moves the player up by 2 pixels (if possible). */
+    method void moveUp() {
+        if (y > 1) {
+            // Erases the bottom two rows
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x, (y + size) - 1, x + size, y + size);
+            let y = y - 2;
+            // Draws the top two rows 
+            do Screen.setColor(true);
+            do Screen.drawRectangle(x, y, x + size, y + 1);
+        }
+        return;
+    }
+
+/** Moves the player down by 2 pixels (if possible). */
+    method void moveDown() {
+        if ((y + size) < 234) {
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x, y, x + size, y + 1);
+            let y = y + 2;
+            do Screen.setColor(true);
+            do Screen.drawRectangle(x, (y + size) - 1, x + size, y + size);
+        }
+        return;
+    }
+
+/** Moves the player left by 2 pixels (if possible). */
+    method void moveLeft() {
+        if (x > 1) {
+            do Screen.setColor(false);
+            do Screen.drawRectangle((x + size) - 1, y, x + size, y + size);
+            let x = x - 2;
+            do Screen.setColor(true);
+            do Screen.drawRectangle(x, y, x + 1, y + size);
+        }
+        return;
+    }
+
+/** Moves the player right by 2 pixels (if possible). */
+    method void moveRight() {
+        if ((x + size) < 510) {
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x, y, x + 1, y + size);
+            let x = x + 2;
+            do Screen.setColor(true);
+            do Screen.drawRectangle((x + size) - 1, y, x + size, y + size);
+        }
+        return;
+    }
+}
